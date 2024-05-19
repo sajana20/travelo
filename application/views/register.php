@@ -12,7 +12,7 @@
 	crossorigin="anonymous"></script>
 	<style>
 		.register-container {
-			background-color: #AFFEFF ;
+			background-color: #dee2e6 ;
 		}
 		input {
 			min-width: 300px;
@@ -103,6 +103,8 @@
 				processData: false,
 				async: false,
 				success: function (u) {
+
+					console.log("csdcd")
 					window.location = '<?php echo base_url('index.php/page/login') ?>';
 				}
 			});

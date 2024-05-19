@@ -49,6 +49,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         height: 100vh;
         overflow-y: auto;
         padding: 0 200px;
+        width: calc(100% - 250px);
     }
 
     .liked {
@@ -104,6 +105,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
         margin-left: 8px;
 
     }
+
+    .post-container .date {
+        font-weight: 600;
+        font-size: 12px;
+        color: #7364aca3;
+        margin-bottom: 10px;
+
+    }
 </style>
 
 <div class="main-content">
@@ -148,11 +157,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
     var userId = sessionStorage.getItem("user")
     loadPost('<?php echo base_url('index.php/api/PostController/posts/') ?>' + userId)
 
-    function generateTagContent(tagString){
+    function generateTagContent(tagString) {
         var content = '';
         tagString.split(",").forEach(tag => {
-            content+= `<div class="badge bg-light text-dark tag me-1">${tag}</div>`
-            
+            content += `<div class="badge bg-light text-dark tag me-1">${tag}</div>`
+
         });
         return content
 
@@ -197,9 +206,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     var row = `
                 <div class="col-12 post-container">
                     <div class="full-name">${post.get('full_name')}</div>
+                    <div class="date">${post.get('date_posted')}</div>                   
                     <div class="description">${post.get('description')}</div>
                     
-                    <div>${generateTagContent( post.get('tag'))}</div>
+                    <div>${generateTagContent(post.get('tag'))}</div>
                     <img src="<?php echo base_url() ?>${post.get('image')}" class="card-img-top" alt="Image">
                     <div class="d-flex mt-3">
                     <div class="like-btn ${post.get('liked') == 1 ? 'liked' : 'disliked'} like-button-new" data-post_id="${post.get('post_id')}" id= "likeButton${post.get('post_id')}" 
@@ -223,15 +233,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 });
             },
             events: {
-                "click .like-button-new" : "onLikeClick"
+                "click .like-button-new": "onLikeClick"
             },
-            onLikeClick: function(e) {
+            onLikeClick: function (e) {
                 var status;
                 var newLikeCount;
                 var postId = $(e.currentTarget).data('post_id');
                 var userId = sessionStorage.getItem("user");
                 var postToEdit = posts.get(postId);
-                
+
                 var likeCount = postToEdit.get('like_count');
                 if ($("#likeButton" + postId).hasClass("disliked")) {
 
@@ -242,10 +252,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     newLikeCount = likeCount != 1 ? (likeCount - 1) : 0;
                 }
 
-                postToEdit.set({'like_count': newLikeCount, 'status': status, 'post_id': postId, 'user_id': userId, liked: status})
+                postToEdit.set({ 'like_count': newLikeCount, 'status': status, 'post_id': postId, 'user_id': userId, liked: status })
 
                 postToEdit.save({}, {
-                    data: jsonObjectToFormData(postToEdit.toJSON()), contentType: false,processData:false,
+                    data: jsonObjectToFormData(postToEdit.toJSON()), contentType: false, processData: false,
                     url: '<?php echo base_url('index.php/api/PostController/posts_like') ?>', async: false,
                     emulateHTTP: true
                 });
@@ -256,19 +266,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
         new PostView();
     }
 
-   
-
     function jsonObjectToFormData(obj) {
-    var formData = new FormData();
-    
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            formData.append(key, obj[key]);
+        var formData = new FormData();
+
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                formData.append(key, obj[key]);
+            }
         }
+
+        return formData;
     }
-    
-    return formData;
-}
 
     function clearSearch() {
         $('#searchPost').val('')
@@ -328,7 +336,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         </li>                       
                     </ul>
                     
-            `
+                    `
                     self.append(row);
                 });
 
@@ -365,7 +373,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
         });
     }
 
-    $(".comment-input").keyup(function(e){
+    $("#searchPost").autocomplete({
+        source: availableTags,
+        select: function (e, ui) {
+            var userId = sessionStorage.getItem("user")
+            var searchTag = (ui.item.value);
+            loadPost('<?php echo base_url('index.php/api/PostController/posts/') ?>' + userId + "?search_key=" + searchTag)
+            $('#clearSearch').show()
+
+
+        }
+    });
+
+    $(".comment-input").keyup(function (e) {
         var el = $(e.currentTarget);
         $(`#${el.attr('id')}btn`).prop('disabled', el.val().length == 0);
     });

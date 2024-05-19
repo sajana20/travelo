@@ -16,7 +16,7 @@
     }
 
     .category-container {
-        background-color: #C6D3F7;
+        background-color: #dee2e6;
         border-radius: 4px;
     }
 
@@ -41,7 +41,7 @@
         <div id="login-overlay" class="card shadow-lg">
             <div class="card-body">
                 <div class="modal-header">
-                    <h4 class="modal-title mt-3">What are your interest</h4>
+                    <h4 class="modal-title mt-3">What are Your Interest</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -113,7 +113,7 @@
                                             Adventure</span>
                                     </div>
                                 </div>
-                                <button id="interestButton" type="submit" class="btn btn-success btn-block">
+                                <button id="interestButton" type="submit" class="btn btn-primary btn-block">
                                     Done
                                 </button>
 
@@ -135,7 +135,6 @@
 
         var selected = $(this).hasClass('selected');
         var tag = $(this).html();
-        console.log('selected', selected)
         if (selected) {
             selectedInterests.push(tag)
         } else {

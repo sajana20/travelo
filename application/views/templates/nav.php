@@ -2,7 +2,6 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <style>
-  /* The side navigation menu */
   .sidenav {
     padding-top: 60px;
     position: fixed;

@@ -19,7 +19,6 @@ class AuthController extends RestController
 
 		$user = $this->UserAccountModel->findUserByEmail($email);
 		if ($user) {
-			// $userData = '{"full_name" : ' . $user->full_name . ',"email" : ' . $user->email . '}';
 
 			if (password_verify($this->post('password'), $user->password)) {
 				$this->response(
@@ -51,7 +50,7 @@ class AuthController extends RestController
 		];
 
 		$user = $this->UserAccountModel->addUser($data);
-		$this->set_response($user, RESTController::HTTP_CREATED); // CREATED (201) being the HTTP response code
+		$this->set_response(json_encode(['status'=> $user]), RESTController::HTTP_CREATED);
 	}
 
 }

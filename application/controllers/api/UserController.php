@@ -15,9 +15,7 @@ class UserController extends RestController
 	public function interest_post()
 	{
 		$user = $this->UserAccountModel->addInterest($this->input->post());
-
 		$this->set_response(json_encode($user), RESTController::HTTP_OK);
-
 
 	}
 
@@ -26,10 +24,7 @@ class UserController extends RestController
 
 		$userId = $this->uri->segment(4);
 		$hasInterest = $this->UserAccountModel->hasInterests($userId);
-
 		$this->set_response(json_encode($hasInterest), RESTController::HTTP_OK);
-
-
 	}
 
 	public function profile_get()
@@ -37,9 +32,7 @@ class UserController extends RestController
 
 		$userId = $this->uri->segment(4);
 		$user = $this->UserAccountModel->findUserById($userId);
-
 		$this->set_response(json_encode($user), RESTController::HTTP_OK);
-
 
 	}
 
@@ -47,7 +40,6 @@ class UserController extends RestController
 	{
 		$userId = $this->uri->segment(4);
 		$this->UserAccountModel->updateUserProfile($this->input->post(), $userId);
-
 		$this->set_response(json_encode(['status'=> "success"]), RESTController::HTTP_OK);
 
 

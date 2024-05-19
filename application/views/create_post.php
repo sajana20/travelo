@@ -1,4 +1,3 @@
-
 <style>
   .creat-post-container {
 
@@ -12,7 +11,6 @@
 
 
   .btn-container {
-    /* not working */
     margin-bottom: 35px;
   }
 
@@ -50,10 +48,10 @@
   <div class="row mt-3">
     <div class="col">
       <div class="ui-widget mt-3 mb-3">
-        
-        <input type="text" class="form-control" id="searchPost" name="searchPost"
-                        placeholder="Search Post" aria-label="searchPost" aria-describedby="basic-addon2">
-        <button id="clearSearch" type="button" class="btn btn-primary mx-auto " onclick="clearSearch()">Clear
+
+        <input type="text" class="form-control" id="searchPost" name="searchPost" placeholder="Search Post"
+          aria-label="searchPost" aria-describedby="basic-addon2">
+        <button id="clearSearch" type="button" class="btn btn-primary mx-auto mt-3 " onclick="clearSearch()">Clear
           Search</button>
       </div>
     </div>
@@ -80,7 +78,6 @@
       </div>
       <div class="modal-body">
         <form id="createPostForm">
-          <p>User Name</p>
           <div class="form-group input-group mb-3 mt-3">
             <input type="text" class="form-control" id="description" name="description"
               placeholder="What's on your mind?" aria-label="What's on your mind?" aria-describedby="basic-addon2">
@@ -135,17 +132,7 @@
 
   var tags = [];
 
-  $("#searchPost").autocomplete({
-    source: availableTags,
-    select: function (e, ui) {
-      var userId = sessionStorage.getItem("user")
-      var searchTag = (ui.item.value);
-      loadPost('<?php echo base_url('index.php/api/PostController/posts/') ?>' + userId + "?search_key=" + searchTag)
-      $('#clearSearch').show()
 
-
-    }
-  });
 
   function onAddClick() {
 
@@ -191,7 +178,7 @@
 
 
   function onclickPost() {
-
+    var userId = sessionStorage.getItem("user")
     var CreatePostModel = Backbone.Model.extend(
       {
         urlRoot: '<?php echo base_url('index.php/api/PostController/save') ?>',
@@ -208,8 +195,9 @@
       processData: false,
       async: false,
       success: function (u) {
+        loadPost('<?php echo base_url('index.php/api/PostController/posts/') ?>' + userId)
         $('#createPost').modal('hide');
-        
+
       }
     });
   }

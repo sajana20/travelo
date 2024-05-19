@@ -16,7 +16,7 @@ class PostController extends RestController
 	public function save_post()
 	{
 		$user = $this->PostModel->savePosts($this->input->post());
-		$this->set_response($user, RESTController::HTTP_CREATED);
+		$this->set_response(json_encode(['status'=> $user]), RESTController::HTTP_CREATED);
 
 
 	}
@@ -39,8 +39,15 @@ class PostController extends RestController
 	public function user_posts_get()
 	{
 		$userId = $this->uri->segment(4);
-		$posts = $this->PostModel->loadPostByUserId($userId);
+		$searchTag = $this->input->get('search_key');
+
+		if($searchTag){
+			$posts = $this->PostModel->loadAllUserPostBySearchKey($userId, $searchTag);
+			$this->set_response(json_encode($posts), RESTController::HTTP_OK);
+		} else {
+			$posts = $this->PostModel->loadPostByUserId($userId);
 		$this->set_response(json_encode($posts), RESTController::HTTP_OK);
+		}	
 
 	}
 

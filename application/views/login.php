@@ -13,7 +13,7 @@
 
 	<style>
 		.login-container {
-			background-color: #AFFEFF ;
+			background-color: #dee2e6 ;
 		}
 
 		input {
@@ -121,8 +121,6 @@
 				} else
 
 					window.location = '<?php echo base_url('index.php/page/interest') ?>';
-
-
 
 			}
 		});

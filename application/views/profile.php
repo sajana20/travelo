@@ -22,6 +22,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         height: 100vh;
         overflow-y: auto;
         padding: 0 200px;
+        width: calc(100% - 250px);
     }
 
     .liked {
@@ -445,7 +446,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         $('#postDetails .full-name').html(postData.full_name)
         $('#postDetails .date-posted').html(postData.date_posted)
         $('#postDetails .image').attr("src", '<?php echo base_url() ?>' + postData.image)
-        $('#postDetails .like-count').html(postData.like_count + ' likes')
+        $('#postDetails .like-count').html(postData.like_count ? postData.like_count + ' likes' : "")
         var CommentModel = Backbone.Model.extend({
             urlRoot: '<?php echo base_url('index.php/api/PostController/comment/') ?>' + postData.post_id,
             defaults: {
@@ -537,6 +538,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
         return content
 
     }
+
+    $("#searchPost").autocomplete({
+    source: availableTags,
+    select: function (e, ui) {
+      var userId = sessionStorage.getItem("user")
+      var searchTag = (ui.item.value);
+      loadPost('<?php echo base_url('index.php/api/PostController/user_posts/') ?>' + userId + "?search_key=" + searchTag)
+      $('#clearSearch').show()
+
+
+    }
+  });
 
     $(".comment-input").keyup(function(e){
         var el = $(e.currentTarget);

@@ -51,6 +51,12 @@ class PostModel extends CI_Model
         return $query->result();
     }
 
+    public function loadAllUserPostBySearchKey($userId, $searchTag){
+        $query = $this->db->query('SELECT d.*, l.like_count, full_name, pl.liked FROM post_details d left join (select post_id, count(1) as like_count from post_like group by post_id) l on d.post_id = l.post_id join user_account u on d.user_id = u.id left join (select post_id, 1 as liked from post_like  where liked_by = ' . $userId . ' ) pl ON d.post_id = pl.post_id where d.user_id = ' . $userId .' and d.tag like "%' . $searchTag . '%"'. ' ORDER BY date_posted DESC');
+        return $query->result();
+
+    }
+
     public function loadAllComment($postId)
     {
         $query = $this->db->query('SELECT c.*, u.full_name from comment c left join user_account u ON c.user_id=u.id where c.post_id=' . $postId . '');
